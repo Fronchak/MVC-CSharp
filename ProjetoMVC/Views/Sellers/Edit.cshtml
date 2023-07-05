@@ -10,7 +10,11 @@
     <div class="col-12 col-md-4">
         <h2>@ViewData["Title"]</h2>
         <hr />
-        <form asp-action="Create">
+        <form asp-action="Edit">
+            <input 
+                type="hidden"
+                asp-for="Seller.Id"
+            />
             <div class="mb-3">
                 <label for="name" asp-for="Seller.Name" class="form-label">Name</label>
                 <input type="text"

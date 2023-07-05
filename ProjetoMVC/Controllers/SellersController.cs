@@ -3,6 +3,7 @@ using ProjetoMVC.Models;
 using ProjetoMVC.Models.ViewModels;
 using ProjetoMVC.Services;
 using ProjetoMVC.Services.Exceptions;
+using System.Diagnostics;
 
 namespace ProjetoMVC.Controllers
 {
@@ -42,12 +43,18 @@ namespace ProjetoMVC.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = "Seller not found"
+                });
             }
             Seller seller = _sellerService.FindById(id.Value);
             if(seller == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = "Seller not found"
+                });
             }
             return View(seller);
         }
@@ -64,12 +71,18 @@ namespace ProjetoMVC.Controllers
         {
             if(id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = "Seller not found"
+                });
             }
             Seller seller = _sellerService.FindById(id.Value);
             if(seller == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = "Seller not found"
+                });
             }
             return View(seller);
         }
@@ -83,7 +96,10 @@ namespace ProjetoMVC.Controllers
             Seller seller = _sellerService.FindById(id.Value);
             if (seller == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = "Seller not found"
+                });
             }
             IEnumerable<Department> departments = _departmentService.FindAll();
             SellerFormViewModel viewModel = new SellerFormViewModel()
@@ -100,22 +116,39 @@ namespace ProjetoMVC.Controllers
         {
             if(id != seller.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = "Ids do not match"
+                });
             }
             try
             {
                 _sellerService.Update(seller);
                 return RedirectToAction(nameof(Index));
             }
-            catch(NotFoundException)
+            catch(NotFoundException e)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = e.Message
+                });
             }
-            catch(DbConcurrecyException)
+            catch(DbConcurrecyException e)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new
+                {
+                    message = e.Message
+                });
             }
 
+        }
+
+        public IActionResult Error(string message)
+        {
+            ErrorViewModel viewModel = new ErrorViewModel();
+            viewModel.Message = message;
+            viewModel.RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            return View(viewModel);
         }
     }
 }
