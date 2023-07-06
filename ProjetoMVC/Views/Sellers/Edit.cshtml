@@ -21,6 +21,7 @@
                        id="name"
                        asp-for="Seller.Name"
                        class="form-control" />
+                <span asp-validation-for="Seller.Name" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Seller.Email" for="email" class="form-label">Email</label>
@@ -28,20 +29,25 @@
                        id="email"
                        asp-for="Seller.Email"
                        class="form-control" />
+                <span asp-validation-for="Seller.Email" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Seller.BirthDate" for="birth-date" class="form-label">Birth Date</label>
                 <input type="date"
                        id="birth-date"
                        asp-for="Seller.BirthDate"
-                       class="form-control" />
+                       class="form-control" 
+                />
+                <span asp-validation-for="Seller.BirthDate" class="text-danger"></span>
             </div>
             <div>
                 <label asp-for="Seller.BaseSalary" for="salary" class="form-label">Salary</label>
                 <input type="text"
                        id="salary"
                        asp-for="Seller.BaseSalary"
-                       class="form-control" />
+                       class="form-control" 
+                />
+                <span asp-validation-for="Seller.BaseSalary" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Seller.Department.Id" for="department" class="form-label">Department</label>
@@ -52,6 +58,7 @@
                         <option value="@department.Id">@department.Name</option>
                     }
                 </select>
+                <span asp-validation-for="Seller.Department.Id" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary" type="submit">Edit seller</button>
@@ -59,3 +66,8 @@
         </form>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
