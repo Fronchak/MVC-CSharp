@@ -1,5 +1,6 @@
 ﻿using ProjetoMVC.Data;
 using ProjetoMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoMVC.Services
 {
@@ -12,11 +13,11 @@ namespace ProjetoMVC.Services
             _context = context;
         }
 
-        public List<Department> FindAll()
+        public async Task<List<Department>> FindAllAsync()
         {
-            return _context.Department
+            return await _context.Department
                 .OrderBy((department) => department.Name)
-                .ToList();
+                .ToListAsync();
         } 
     }
 }
