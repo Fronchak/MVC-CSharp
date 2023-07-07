@@ -37,5 +37,24 @@ namespace ProjetoMVC.Services
                 .OrderByDescending((sale) => sale.Date)
                 .ToListAsync();
         }
+
+        public async Task<List<IGrouping<Department, SalesRecord>>> FindByDateGroupingAsync(DateTime? initial, DateTime? final)
+        {
+            IQueryable<SalesRecord> result = from obj in _context.SalesRecord select obj;
+            if(initial.HasValue)
+            {
+                result = result.Where((sale) => sale.Date >= initial.Value);
+            }
+            if(final.HasValue)
+            {
+                result = result.Where((sale) => sale.Date <= final.Value);
+            }
+            return await result
+                .Include((sale) => sale.Seller)
+                .Include((sale) => sale.Seller.Department)
+                .OrderByDescending((sale) => sale.Date)
+                .GroupBy((sale) => sale.Seller.Department)
+                .ToListAsync();
+        }
     }
 }
